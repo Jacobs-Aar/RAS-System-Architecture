@@ -44,7 +44,7 @@ Ensure your Linux host has the following installed:
 ### 2. Pulling the Repository
 Clone the repository and its submodules to your local machine:
 ```bash
-git clone https://github.com/Jacobs-Aar/RAS-System-Architecture
+git clone --recursive https://github.com/Jacobs-Aar/RAS-System-Architecture
 cd RAS-System-Architecture
 ```
 
