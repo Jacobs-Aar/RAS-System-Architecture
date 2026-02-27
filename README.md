@@ -10,15 +10,23 @@ Currently, this stack is configured for deployment and testing on the **F1Tenth*
 
 This repository is organized to separate documentation, container configurations, and ROS2 packages clearly:
 
-* **`docs/`**: Detailed documentation for the system.
-    * `architecture/`: High-level system diagrams and data flow.
-    * `hardware/`: Sensor integrations, wiring guides, and compute unit specs.
-    * `ros2_stack/`: Details on perception, planning, and control nodes.
-* **`docker/`**: Contains the Dockerfiles and `docker-compose.yml` files for isolated environments.
-    * `f1tenth/`: Container setups specifically for the 1:10 scale car.
-    * `go_kart/`: Container setups for the full-scale vehicle (WIP).
-* **`scripts/`**: Utility scripts for environment setup, building workspaces, and launching nodes.
-* **`src/`**: The main ROS2 workspace containing all custom packages and submodules.
+* **`docs/`**: Detailed system documentation.
+  * `architecture/system_overview.md`: High-level system data flow and core design decisions.
+  * `docker/setup_guide.md`: Explanations of container dependencies, base images (e.g., ZED SDK), and compose configurations.
+  * `hardware/hardware_specs.md`: Sensor breakdowns (e.g., ZED2i 120° FOV) and compute limitations.
+  * `ros2_stack/node_architecture.md`: ROS2 node graph, publish/subscribe topics, and custom message types.
+  * `ros2_stack/`: Details on the 4-node core pipeline:
+    **`zed_wrapper`** (Third-Party): Publishes raw video, depth, and point clouds from the ZED2i.
+    **`vision_perception`** (Custom): Subscribes to the video/depth, performs line detection, and publishes a 2D top-down map.
+    **`control_planning`** (Custom): Subscribes to the 2D map, calculates pathing, and publishes `AckermannDriveStamped` commands.
+    **`vesc_driver`** (Third-Party): Translates Ackermann commands into physical actuator movements.
+* **`docker/`**: Environment configurations.
+  * `f1tenth/`: Dockerfiles and compose setups for the 1:10 scale testbed.
+  * `go_kart/`: (WIP) Future container configurations for the full-scale vehicle.
+* **`scripts/`**: Utility scripts for environment setup and networking.
+  * `f1tenth/`: Host-machine setup scripts for the scale car.
+  * `go_kart/`: (WIP) Setup scripts for the full-scale compute unit.
+* **`src/`**: The unified ROS2 workspace. Core perception and control packages are shared, while `_bringup` packages handle vehicle-specific launch configurations.
 
 ---
 
@@ -31,7 +39,7 @@ Ensure your Linux host has the following installed:
 * [Git](https://git-scm.com/downloads)
 * [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 * [Docker Compose](https://docs.docker.com/compose/install/linux/)
-* *(Optional)* NVIDIA Container Toolkit (if using GPU acceleration for ML/CV tasks)
+* [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 ### 2. Pulling the Repository
 Clone the repository and its submodules to your local machine:

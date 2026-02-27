@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  f1tenth_core:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: f1tenth_stack
+    # Required for GPU passthrough to use the ZED SDK
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu, compute, video, utility]
+    # Mount the local src directory to the container's workspace
+    volumes:
+      - ../../src:/ros2_ws/src
+    # Pass through USB ports for ZED camera and VESC
+    # Note: These /dev paths might need adjusting on the physical Jetson/Linux host
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+      - "/dev/ttyACM0:/dev/ttyACM0" # Common VESC port
+    # Network mode host allows ROS2 to communicate easily 
+    network_mode: "host"
+    privileged: true # Often required for full hardware access on physical robots
+    tty: true
+    stdin_open: true
