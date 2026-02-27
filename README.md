@@ -38,7 +38,7 @@ Clone the repository and its submodules to your local machine:
 ```bash
 git clone https://github.com/Jacobs-Aar/RAS-System-Architecture
 cd RAS-System-Architecture
-
+```
 
 ### 3. Determining F1Tenth or Full-Scale Go-Kart
 
@@ -49,24 +49,29 @@ The F1Tenth container environment includes the base ROS2 installation, standard 
 1. Navigate to the Docker directory:
 ```bash
 cd docker/f1tenth
+```
 
 2. Build the Docker image:
 ```bash
 docker compose build
+```
 
 3. Launch the stack
 ```bash
 docker compose up -d
+```
 
 4. Access the running container:
 ```bash
 docker exec -it f1tenth_core /bin/bash
+```
 
 5. Build the ROS2 Workspace (Insider the Container):
 ```bash
 cd /ros2_ws
 colcon build --symlink-install
 source install/setup.bash
+```
 
 #### Go-Kart Deployment
 ##### This section is reserved for when the Go-Kart is being implemented and migrated to from the F1Tenth architecture
